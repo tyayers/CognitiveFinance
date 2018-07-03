@@ -47,78 +47,13 @@ namespace CogStockFunctions.Functions
                     // Add news update                                                                                                
                     AddUpdate(story.CompanyName + "_" + story.PublishDate, story.CompanyName, story.Symbol, "NEWS", story.Title, 0, 0, story.Sentiment, story.Price, log);
                     // Add github stars
-                    int gitHubStars = ServiceProxies.GetGitHubStars(story.CompanyName);
-                    if (gitHubStars > 0) {
-                        AddUpdate(story.CompanyName + "_GHSTARS_" + story.PublishDate, story.CompanyName, story.Symbol, "GHSTARS", "", gitHubStars, 0, "-1", story.Price, log);
+                    GitHub gitHubData = ServiceProxies.GetGitHubStars(story.CompanyName);
+                    if (gitHubData.Stars > 0 || gitHubData.Watches > 0) {
+                        AddUpdate(story.CompanyName + "_GITHUB_" + story.PublishDate, story.CompanyName, story.Symbol, "GITHUB", "", gitHubData.Stars, gitHubData.Watches, "-1", story.Price, log);
                     }
                 }                
             }
         }
-
-        // private static List<News> GetNews()
-        // {
-        //     List<News> results = new List<News>();
-
-        //     using (HttpClient client = new HttpClient())
-        //     {
-        //         client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "170b9892d8cc491e90401b645cc0b8af");
-        //         string rssContent = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/news?category=technology&mkt=en-us").Result;
-
-        //         Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(rssContent);
-
-        //         if (obj != null) {
-        //             AuthenticationResponse auth = GetTwitterAuthenticationToken();
-            
-        //             foreach (JObject newsItem in obj["value"]) {
-        //                 string title = newsItem["name"].ToString();
-        //                 string description = newsItem["description"].ToString();
-        //                 string datePublished = newsItem["datePublished"].ToString();
-        //                 string sentiment = GetSentitment(title + " " + description);
-        //                 List<Company> companies = GetCompanies(title);
-
-        //                 if (companies != null) {
-        //                     foreach (Company comp in companies) {
-        //                         string Price = GetStockPrice(comp.Symbol);
-
-        //                         if (!CheckIfCompanyExists(comp.Name)) {
-        //                             AddCompany(comp.Name, comp.Symbol);
-        //                             // Add tweets
-        //                             if (comp.Symbol != "" && Price != "0") {
-        //                                 List<Tweet> tweets = SearchTweets(comp.Name, auth);
-        //                                 foreach (Tweet tweet in tweets) {
-        //                                     AddUpdate(comp.Name + "_TWEET_" + datePublished, comp.Name, comp.Symbol, "TWEET", tweet.Text, Convert.ToInt32(tweet.FavoriteCount), Convert.ToInt32(tweet.RetweetCount), tweet.Sentiment, Price);
-        //                                 }
-        //                             }
-        //                         }
-        //                         if (comp.Symbol != "" && Price != "0") {
-        //                             // Add news update                                                                                                
-        //                             AddUpdate(comp.Name + "_" + datePublished, comp.Name, comp.Symbol, "NEWS", title, 0, 0, sentiment, Price);
-        //                             // Add github stars
-        //                             int gitHubStars = GetGitHubStars(comp.Name);
-        //                             if (gitHubStars > 0) {
-        //                                 AddUpdate(comp.Name + "_GHSTARS_" + datePublished, comp.Name, comp.Symbol, "GHSTARS", "", gitHubStars, 0, "-1", Price);
-        //                             }
-        //                         }
-        //                     }
-        //                 }
-        //             }
-        //         }
-
-        //         return results;
-        //     }
-        // }
-
-
-
-
-
-
-
-
-
-
-
-
 
         private static bool CheckIfCompanyExists(string Name, TraceWriter log) {
             bool result = false;

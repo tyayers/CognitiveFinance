@@ -217,8 +217,8 @@ namespace CogStockFunctions.Utils
             return result;           
         }
 
-        public static int GetGitHubStars(string Company) {
-            int result = 0;
+        public static GitHub GetGitHubStars(string Company) {
+            GitHub result = new GitHub();
 
             if (Company != "") {
                 using (HttpClient client = new HttpClient())
@@ -231,7 +231,8 @@ namespace CogStockFunctions.Utils
                         Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(JsonDataResponse);
 
                         foreach (JObject repo in obj["items"]) {
-                            result += Convert.ToInt32(repo["stargazers_count"].ToString());
+                            result.Stars += Convert.ToInt32(repo["stargazers_count"].ToString());
+                            result.Watches += Convert.ToInt32(repo["watchers_count"].ToString());
                         }
                     }                
                 }
