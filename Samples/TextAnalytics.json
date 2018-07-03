@@ -1,0 +1,52 @@
+{
+    "documents": [
+        {
+            "id": "1",
+            "entities": [
+                {
+                    "name": "Facebook",
+                    "matches": [
+                        {
+                            "text": "Facebook",
+                            "offset": 0,
+                            "length": 8
+                        }
+                    ],
+                    "wikipediaLanguage": "en",
+                    "wikipediaId": "Facebook",
+                    "wikipediaUrl": "https://en.wikipedia.org/wiki/Facebook",
+                    "bingId": "4bc8f781-7083-d1a0-f781-9466e0eb62e7"
+                },
+                {
+                    "name": "United Kingdom",
+                    "matches": [
+                        {
+                            "text": "British",
+                            "offset": 41,
+                            "length": 7
+                        }
+                    ],
+                    "wikipediaLanguage": "en",
+                    "wikipediaId": "United Kingdom",
+                    "wikipediaUrl": "https://en.wikipedia.org/wiki/United_Kingdom",
+                    "bingId": "b1a5155a-6bb2-4646-8f7c-3e6b3a53c831"
+                },
+                {
+                    "name": "Artificial intelligence",
+                    "matches": [
+                        {
+                            "text": "AI",
+                            "offset": 49,
+                            "length": 2
+                        }
+                    ],
+                    "wikipediaLanguage": "en",
+                    "wikipediaId": "Artificial intelligence",
+                    "wikipediaUrl": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+                    "bingId": "9d99fb44-edac-0e03-1579-19d8d8591a49"
+                }
+            ]
+        }
+    ],
+    "errors": []
+}

@@ -1,0 +1,379 @@
+{
+    "_type": "News",
+    "webSearchUrl": "https://www.bing.com/news/search?q=Technology+News&form=TNSA02",
+    "value": [
+        {
+            "name": "Facebook and Twitter Expand Peek Into Who’s Behind Their Ads",
+            "url": "https://www.nytimes.com/2018/06/28/technology/facebook-twitter-political-ads.html",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.241A36187446B874C2AD74EAACCB7A7D&pid=News",
+                    "width": 600,
+                    "height": 400
+                }
+            },
+            "description": "MENLO PARK, Calif. — Social media companies, stepping up efforts to stop disinformation on their online platforms ahead of this year’s midterm elections, unveiled on Thursday new tools aimed at improving transparency around advertisements. In ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/db421f6c-2b2f-e402-04dc-722aaf939fe9",
+                    "name": "Peek"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "The New York Times",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_cc657c1af702fae867766bbf2aa25756&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T21:32:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Amazon, H&M and other multinationals pressing to soften Indian state's plastic ban",
+            "url": "https://www.reuters.com/article/us-india-plastic-ban/amazon-hm-and-other-multinationals-pressing-to-soften-indian-states-plastic-ban-idUSKBN1JP0BU",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.C1FBA255FD5508B9778D5807DED582E4&pid=News",
+                    "width": 700,
+                    "height": 483
+                }
+            },
+            "description": "MUMBAI (Reuters) - Multinational companies like Amazon Inc (AMZN.O) and H&M (HMb.ST) are lobbying to soften a ban against single-use plastic imposed by an Indian state last week, according to four sources familiar with the matter. The ban by the state of ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/9f417f89-9a37-e0d0-912e-99dccfb8982d",
+                    "name": "Reuters"
+                },
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/ed52b29e-a568-e006-86aa-1b447a603889",
+                    "name": "States of India"
+                }
+            ],
+            "mentions": [
+                {
+                    "name": "Reuters"
+                },
+                {
+                    "name": "States of India"
+                },
+                {
+                    "name": "Amazon.com"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Reuters",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_62e71bb461e92ae25d37bed673fc53b9&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-29T03:31:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Americans Believe Tech Companies Are Censoring Political Views, New Poll Finds",
+            "url": "http://time.com/5324005/tech-bias-conservatives-poll-pew/",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.A9FE20EA158EA1CFA47CE7E1066D3DC4&pid=News",
+                    "width": 700,
+                    "height": 467
+                }
+            },
+            "description": "Jaap Arriens—NurPhoto/Getty Images By Katy Steinmetz 10:00 AM EDT A new poll from Pew Research Center helps quantify the ambivalent feelings Americans are having about the tech sector in the wake of controversies over user privacy and allegations of ...",
+            "mentions": [
+                {
+                    "name": "Pew Research Center"
+                },
+                {
+                    "name": "United States"
+                },
+                {
+                    "name": "Republican Party"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Time",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_f55c44e0a7d524a26ea2342e45f2f4a0&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T14:16:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Cryptojacking saw an explosion in the first quarter of 2018 — and your devices could be affected",
+            "url": "http://www.businessinsider.com/cryptojacking-exploded-this-year-heres-how-it-may-be-affecting-you-2018-6",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.62BF0499B1BC3A3C17F9589A4CFD351A&pid=News",
+                    "width": 700,
+                    "height": 525
+                }
+            },
+            "description": "Cryptojacking is malware that mines cryptocurrency without a machine's owner knowing. Cryptojacking rose by 629% from the final quarter of 2017 to the first quarter of 2018. This malware spike could threaten the growth of cryptocurrencies. Cryptocurrencies ...",
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Business Insider",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_86ac6d5fd1859e509650fb5feef96bf7&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T13:17:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "China's penetration of Silicon Valley creates risks for startups",
+            "url": "https://www.reuters.com/article/us-usa-china-techinvesting-insight/chinas-penetration-of-silicon-valley-creates-risks-for-startups-idUSKBN1JP08V",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.A2EB9B3F19BD651A6FEE7B5B8E140B70&pid=News",
+                    "width": 700,
+                    "height": 413
+                }
+            },
+            "description": "SAN FRANCISCO (Reuters) - Danhua Capital has invested in some of Silicon Valley’s most promising startups in areas like drones, artificial intelligence and cyber security. The venture capital firm is based just outside Stanford University, the epicenter ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/a71a2b45-2e78-de38-9fde-548c008c91b0",
+                    "name": "Silicon Valley"
+                },
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/5fcc3d97-0cf2-94e5-6dad-cd70e387bd69",
+                    "name": "China"
+                },
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/9f417f89-9a37-e0d0-912e-99dccfb8982d",
+                    "name": "Reuters"
+                }
+            ],
+            "mentions": [
+                {
+                    "name": "Silicon Valley"
+                },
+                {
+                    "name": "China"
+                },
+                {
+                    "name": "Reuters"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Reuters",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_62e71bb461e92ae25d37bed673fc53b9&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-29T02:33:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "The growing importance of remarketing audiences in Google paid search management",
+            "url": "https://searchengineland.com/the-growing-importance-of-remarketing-audiences-in-google-paid-search-management-300887",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.EFA1F03FCBB4A2794F0171DAF2FD0180&pid=News",
+                    "width": 700,
+                    "height": 393
+                }
+            },
+            "description": "Since its introduction of remarketing lists for search ads (RLSA) into beta in 2012, Google has allowed advertisers to target search campaigns based on past customer interactions. Such targeting can be used to adjust bids, ad copy and landing pages, and ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/8ee9bcb9-cf38-fdfe-71b9-c11fcb43f807",
+                    "name": "Land, California"
+                },
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/f39b29ec-05ee-d6cb-3070-ddaa0fb00ee0",
+                    "name": "Google"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "Search Engine Land",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_efa186b90d434d6517712d9be67b88c5&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T15:37:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Rambus fires CEO Ron Black for unspecified 'conduct' issue",
+            "url": "https://www.cnet.com/news/rambus-fires-ceo-ron-black-for-unspecified-conduct-issue/",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.8E7F3F6DE9644BD91BDB347E8E1A1DA9&pid=News",
+                    "width": 670,
+                    "height": 503
+                }
+            },
+            "description": "Rambus, a memory design and patent licensing company, said Thursday it fired Chief Executive Officer Ron Black after an incident the company's board of directors determined fell short of the Rambus' conduct standards. The termination follows an incident ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/7044a062-6523-5149-e6b3-e16cbdb8d3ca",
+                    "name": "Ronald Black"
+                },
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/37400a34-d8eb-49d9-f563-05f11e797614",
+                    "name": "Rambus"
+                }
+            ],
+            "mentions": [
+                {
+                    "name": "Ronald Black"
+                },
+                {
+                    "name": "Rambus"
+                },
+                {
+                    "name": "CNET"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "CNET",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_813fbe5ed7179eb7f517fd9bab6522f9&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-29T04:32:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "California passes digital privacy bill that could have impact across U.S.",
+            "url": "https://www.nbcnews.com/tech/tech-news/california-passes-digital-privacy-bill-could-have-impact-across-u-n887591",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.8F9B003945B1287A9501DABFBE953227&pid=News",
+                    "width": 700,
+                    "height": 367
+                }
+            },
+            "description": "California passes digital privacy bill that could have impact across U.S. The bill requires companies like Google, Facebook and Amazon to tell users what data they collect and who they share it with. SAN FRANCISCO — California enacted the nation’s ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/3009d91d-d582-4c34-85ba-772ba09e5be1",
+                    "name": "California"
+                }
+            ],
+            "mentions": [
+                {
+                    "name": "California"
+                },
+                {
+                    "name": "United States"
+                },
+                {
+                    "name": "Amazon.com"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "NBC News",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_e4bde9ad3949725c2f4ad268ff549295&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T22:31:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Cuba has a hidden internet system based on trading USB sticks",
+            "url": "https://www.newscientist.com/article/2173008-cuba-has-a-hidden-internet-system-based-on-trading-usb-sticks/",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.CD94FA26E458D5F15DCD9F9A78FB9A83&pid=News",
+                    "width": 700,
+                    "height": 466
+                }
+            },
+            "description": "Cuba has a very special kind of internet. Few people have an internet connection at home because it’s so expensive. Instead a weekly collection of websites and entertainment is physically swapped on USB sticks and portable hard drives. Each week ...",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/bd1112ec-a711-52b0-92b0-a57a633f397e",
+                    "name": "Cuba"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "New Scientist",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_00b86cc7e2e6b1ee440b9bf0a6570c00&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T11:37:00.0000000Z",
+            "category": "Technology"
+        },
+        {
+            "name": "Not Android: Google just invested in a new mobile OS",
+            "url": "https://www.slashgear.com/not-android-google-just-invested-in-a-new-mobile-os-28536031/",
+            "image": {
+                "thumbnail": {
+                    "contentUrl": "https://www.bing.com/th?id=ON.1E2BF37930D399A2B6E193E46962F163&pid=News",
+                    "width": 700,
+                    "height": 442
+                }
+            },
+            "description": "Google invested in a mobile OS called KaiOS this month, and it’s no secret that it’s not based in Android. What we’re looking at here is a company that makes an operating system that’s focused on feature phones – but feature phones that are smart.",
+            "about": [
+                {
+                    "readLink": "https://api.cognitive.microsoft.com/api/v7/entities/cd479382-d340-5848-c99d-ed371b00b752",
+                    "name": "Android"
+                }
+            ],
+            "provider": [
+                {
+                    "_type": "Organization",
+                    "name": "SlashGear",
+                    "image": {
+                        "thumbnail": {
+                            "contentUrl": "https://www.bing.com/th?id=AR_14787c54415143c6971751e7101347fe&pid=news"
+                        }
+                    }
+                }
+            ],
+            "datePublished": "2018-06-28T15:40:00.0000000Z",
+            "category": "Technology"
+        }
+    ]
+}

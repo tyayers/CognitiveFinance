@@ -1,0 +1,87 @@
+{
+    "ResultSet": {
+        "Query": "microsoft",
+        "Result": [
+            {
+                "symbol": "MSFT-USD.SW",
+                "name": "Microsoft",
+                "exch": "EBS",
+                "type": "S",
+                "exchDisp": "Swiss",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSFT",
+                "name": "Microsoft Corporation",
+                "exch": "NAS",
+                "type": "S",
+                "exchDisp": "NASDAQ",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSFT.MX",
+                "name": "Microsoft Corporation",
+                "exch": "MEX",
+                "type": "S",
+                "exchDisp": "Mexico",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSF.SG",
+                "name": "MICROSOFT CORP. Registered Shar",
+                "exch": "STU",
+                "type": "S",
+                "exchDisp": "Stuttgart",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSFT.BA",
+                "name": "Microsoft Corporation",
+                "exch": "BUE",
+                "type": "S",
+                "exchDisp": "Buenos Aires",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSF.F",
+                "name": "Microsoft Corporation",
+                "exch": "FRA",
+                "type": "S",
+                "exchDisp": "Frankfurt",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSF.DU",
+                "name": "MICROSOFT  DL-,00000625",
+                "exch": "DUS",
+                "type": "S",
+                "exchDisp": "Dusseldorf Stock Exchange",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSF2.L",
+                "name": "Leverage Shares 2x Microsoft ETC A",
+                "exch": "LSE",
+                "type": "E",
+                "exchDisp": "London",
+                "typeDisp": "ETF"
+            },
+            {
+                "symbol": "0QYP.L",
+                "name": "MICROSOFT CORP MICROSOFT ORD SH",
+                "exch": "LSE",
+                "type": "S",
+                "exchDisp": "London",
+                "typeDisp": "Equity"
+            },
+            {
+                "symbol": "MSF.BE",
+                "name": "MICROSOFT  DL-,00000625",
+                "exch": "BER",
+                "type": "S",
+                "exchDisp": "Berlin",
+                "typeDisp": "Equity"
+            }
+        ]
+    }
+}
