@@ -22,9 +22,9 @@ namespace CogStockFunctions.Functions
         [FunctionName("CheckNews")]
         public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, TraceWriter log)
         {
-            log.Info("C# HTTP trigger function processed a request.");
+            log.Info("C# CheckNews HTTP trigger function processed a request.");
 
-            List<News> newsUpdates = Utils.ServiceProxies.GetNews();
+            List<News> newsUpdates = Utils.ServiceProxies.GetNews("Technology", log);
             log.Info($"Found {newsUpdates.Count.ToString()} news stories from Bing News, adding to db..");
 
             foreach (News story in newsUpdates) {
@@ -37,7 +37,9 @@ namespace CogStockFunctions.Functions
                         List<Tweet> tweets = ServiceProxies.SearchTweets(story.CompanyName);
                         log.Info($"Found {tweets.Count.ToString()} tweets for company {story.CompanyName}, adding...");
                         foreach (Tweet tweet in tweets) {
-                            AddUpdate(story.CompanyName + "_TWEET_" + story.PublishDate, story.CompanyName, story.Symbol, "TWEET", tweet.Text, Convert.ToInt32(tweet.FavoriteCount), Convert.ToInt32(tweet.RetweetCount), tweet.Sentiment, story.Price, log);
+                            DateTime publishDateTime = DateTime.ParseExact(tweet.DatePublished, "ddd MMM dd HH:mm:ss zzz yyyy", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.AssumeLocal);
+                            string Price = ServiceProxies.GetStockPrice(story.Symbol, publishDateTime.ToString("yyyy-MM-dd"), log);
+                            DataRepository.AddUpdate(story.CompanyName + "_TWEET_" + tweet.DatePublished, story.CompanyName, story.Symbol, "TWEET", tweet.Text, Convert.ToInt32(tweet.FavoriteCount), Convert.ToInt32(tweet.RetweetCount), tweet.Sentiment, Price, publishDateTime, log);
                         }
                     }
                 }
@@ -45,11 +47,11 @@ namespace CogStockFunctions.Functions
                 // Now add news
                 if (story.Symbol != "" && story.Price != "0") {
                     // Add news update                                                                                                
-                    AddUpdate(story.CompanyName + "_" + story.PublishDate, story.CompanyName, story.Symbol, "NEWS", story.Title, 0, 0, story.Sentiment, story.Price, log);
+                    DataRepository.AddUpdate(story.CompanyName + "_" + story.PublishDate, story.CompanyName, story.Symbol, "NEWS", story.Title, 0, 0, story.Sentiment, story.Price, System.DateTime.Now, log);
                     // Add github stars
                     GitHub gitHubData = ServiceProxies.GetGitHubStars(story.CompanyName);
                     if (gitHubData.Stars > 0 || gitHubData.Watches > 0) {
-                        AddUpdate(story.CompanyName + "_GITHUB_" + story.PublishDate, story.CompanyName, story.Symbol, "GITHUB", "", gitHubData.Stars, gitHubData.Watches, "-1", story.Price, log);
+                        DataRepository.AddUpdate(story.CompanyName + "_GITHUB_" + story.PublishDate, story.CompanyName, story.Symbol, "GITHUB", "", gitHubData.Stars, gitHubData.Watches, "-1", story.Price, System.DateTime.Now, log);
                     }
                 }                
             }
@@ -94,22 +96,6 @@ namespace CogStockFunctions.Functions
                 }
             }
         }
-
-        private static void AddUpdate(string Id, string Name, string Symbol, string Type, string Text, int Metric, int Metric2, string Sentiment, string StockPrice, TraceWriter log) {
-            string sqlStatement = $"IF NOT EXISTS (SELECT * FROM Updates WHERE Id=N'{Id}') BEGIN INSERT INTO Updates (Id, Name, Symbol, Type, Text, Metric, Metric2, Sentiment, StockPrice, LastUpdate) VALUES (N'{Id}', N'{Name}', N'{Symbol}', '{Type}', N'{Text.Replace("'", "").Replace("\"", "")}', {Metric}, {Metric2}, {Sentiment}, {StockPrice}, '{System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}') END";
-
-            try {
-                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
-                {
-                    var command = new SqlCommand(sqlStatement, connection);
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }  
-            }
-            catch (Exception ex) {
-                log.Error($"AddUpdate error executing SQL Statement {sqlStatement}", ex);
-            }
-        } 
 
         // private static void UpdateTweets() {
         //     AuthenticationResponse auth = GetTwitterAuthenticationToken();

@@ -19,7 +19,7 @@ namespace CogStockFunctions.Utils
     public static class ServiceProxies
     {
         private static AuthenticationResponse _twitterAuth = GetTwitterAuthenticationToken();
-        public static List<News> GetNews()
+        public static List<News> GetNews(string Category, TraceWriter log)
         {
             List<News> results = new List<News>();
 
@@ -39,41 +39,24 @@ namespace CogStockFunctions.Utils
                         string datePublished = newsItem["datePublished"].ToString();
                         string sentiment = GetSentitment(title + " " + description);
 
-                        List<Company> companies = GetCompanies(title);
+                        List<Company> companies = GetCompanies(title, log);
 
                         if (companies != null) {
                             foreach (Company comp in companies) {
-                                string Price = GetStockPrice(comp.Symbol);
+                                string publishDate = newsItem["datePublished"].ToString();
+                                DateTime publishDateTime = DateTime.Parse(publishDate);
+                                string Price = GetStockPrice(comp.Symbol, publishDateTime.ToString("yyyy-MM-dd"), log);
                                 News newNews = new News(){
                                     CompanyName = comp.Name,
                                     Title = newsItem["name"].ToString(),
                                     Description = newsItem["description"].ToString(),
-                                    PublishDate = newsItem["datePublished"].ToString(),
+                                    PublishDate = publishDate,
                                     Sentiment =  GetSentitment(newsItem["name"].ToString() + " " + newsItem["description"]),
                                     Symbol = comp.Symbol,
                                     Price = Price
                                 };
 
                                 results.Add(newNews);
-                                // if (!CheckIfCompanyExists(comp.Name)) {
-                                //     AddCompany(comp.Name, comp.Symbol);
-                                //     // Add tweets
-                                //     if (comp.Symbol != "" && Price != "0") {
-                                //         List<Tweet> tweets = SearchTweets(comp.Name, auth);
-                                //         foreach (Tweet tweet in tweets) {
-                                //             AddUpdate(comp.Name + "_TWEET_" + datePublished, comp.Name, comp.Symbol, "TWEET", tweet.Text, Convert.ToInt32(tweet.FavoriteCount), Convert.ToInt32(tweet.RetweetCount), tweet.Sentiment, Price);
-                                //         }
-                                //     }
-                                // }
-                                // if (comp.Symbol != "" && Price != "0") {
-                                //     // Add news update                                                                                                
-                                //     AddUpdate(comp.Name + "_" + datePublished, comp.Name, comp.Symbol, "NEWS", title, 0, 0, sentiment, Price);
-                                //     // Add github stars
-                                //     int gitHubStars = GetGitHubStars(comp.Name);
-                                //     if (gitHubStars > 0) {
-                                //         AddUpdate(comp.Name + "_GHSTARS_" + datePublished, comp.Name, comp.Symbol, "GHSTARS", "", gitHubStars, 0, "-1", Price);
-                                //     }
-                                // }
                             }
                         }
                     }
@@ -83,7 +66,7 @@ namespace CogStockFunctions.Utils
             }
         }
 
-        public static List<Company> GetCompanies(string Text) {
+        public static List<Company> GetCompanies(string Text, TraceWriter log) {
             List<Company> results = new List<Company>();
 
             using (HttpClient client = new HttpClient())
@@ -103,9 +86,10 @@ namespace CogStockFunctions.Utils
 
                             foreach (JObject entityObject in docObject["entities"]) {
                                 string name = entityObject["name"].ToString().Replace(" (company)", "");
-                                string symbol = GetCompanyStockSymbol(name);
 
-                                results.Add(new Company(){ Name=name, Symbol=symbol});
+                                Company newCompany = GetCompanyInfo(name, log);
+                                if (newCompany.Type == "Organization")
+                                    results.Add(newCompany);
                             }
                         }
                     }
@@ -113,6 +97,59 @@ namespace CogStockFunctions.Utils
             }
 
             return results;
+        }
+
+        public static string GetEntityType(string Name) {
+            string result = "Unknown";
+            using (HttpClient client = new HttpClient())
+            {
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "170b9892d8cc491e90401b645cc0b8af");
+                string response = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/entities/?q=" + Name + "&mkt=en-us&count=10&offset=0&safesearch=Moderate").Result;
+
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(response);
+
+                if (obj != null && obj["entities"] != null) {
+                    result = obj["entities"]["value"].First["entityPresentationInfo"]["entityTypeHints"].First.ToString();
+                }
+            }
+           
+           return result;
+        }
+
+        public static Company GetCompanyInfo(string CompanyName, TraceWriter log) {
+            Company newCompany = new Company();
+            string sqlStatement = $"SELECT * FROM Companies WHERE Name = N'{CompanyName}'";
+            // First check if company already exists in db, then just use that
+
+            try {
+                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                {
+                    var command = new SqlCommand(sqlStatement, connection);
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        newCompany.Name = (string) reader["Name"];
+                        newCompany.Symbol = (string) reader["Symbol"];
+                        newCompany.Type = "Organization";
+                    }
+
+                    // Call Close when done reading.
+                    reader.Close();   
+                }
+            }
+            catch (Exception ex) {
+                log.Error($"GetCompanyInfo db error with {sqlStatement}", ex);
+            }
+
+            // In case doesn't exist in db, try from the internet
+            if (newCompany.Name == "") {
+                newCompany.Name = CompanyName;
+                newCompany.Symbol = GetCompanyStockSymbol(CompanyName);
+                newCompany.Type = GetEntityType(CompanyName); 
+            }
+
+            return newCompany;
         }
 
         public static string GetCompanyStockSymbol(string CompanyName) {
@@ -171,7 +208,7 @@ namespace CogStockFunctions.Utils
                 client.DefaultRequestHeaders.Add("Authorization", string.Format("Bearer {0}", _twitterAuth.AccessToken));
 
                 client.DefaultRequestHeaders.Add("user-agent", "node.js");
-                string stockContent = client.GetStringAsync("https://api.twitter.com/1.1/search/tweets.json?q=" + Company + "&result_type=popular").Result;
+                string stockContent = client.GetStringAsync("https://api.twitter.com/1.1/search/tweets.json?q=" + Company + "&result_type=recent&lang=en&count=100").Result;
                 Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(stockContent);
 
                 if (obj != null && obj["statuses"] != null) {
@@ -192,26 +229,36 @@ namespace CogStockFunctions.Utils
             return results;  
         }
 
-        public static string GetStockPrice(string Symbol) {
+        public static string GetStockPrice(string Symbol, string Date, TraceWriter log) {
             string result = "0";
 
-            if (Symbol != "") {
-                using (HttpClient client = new HttpClient())
-                {
-                    HttpResponseMessage msg = client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol=" + Symbol + "&interval=1min&apikey=FNT06P1FPP3XUTCW").Result;
-                    if (msg.IsSuccessStatusCode)
+            try {
+                if (Symbol != "") {
+                    using (HttpClient client = new HttpClient())
                     {
-                        var JsonDataResponse = msg.Content.ReadAsStringAsync().Result;
-                        Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(JsonDataResponse);
+                        HttpResponseMessage msg = client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=" + Symbol + "&apikey=FNT06P1FPP3XUTCW").Result;
+                        if (msg.IsSuccessStatusCode)
+                        {
+                            var JsonDataResponse = msg.Content.ReadAsStringAsync().Result;
+                            Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(JsonDataResponse);
 
-                        if (obj != null && obj["Time Series (1min)"] != null) {
-                            JToken lastPrice = obj["Time Series (1min)"].First;
-                            JToken closePrice = lastPrice.First["4. close"];
-                            result = closePrice.ToString();
-                            //result = Convert.ToDecimal(result).ToString(System.Globalization.CultureInfo.InvariantCulture);
-                        }
-                    }                
+                            if (obj != null && obj["Time Series (Daily)"] != null) {
+                                JToken dayPrice = obj["Time Series (Daily)"].First;
+
+                                if (Date != "") {
+                                    // We are looking for a specific day, so select for that
+                                    dayPrice = obj["Time Series (Daily)"][Date];
+                                }
+                                JToken closePrice = dayPrice["4. close"];
+                                result = closePrice.ToString();
+                                //result = Convert.ToDecimal(result).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                            }
+                        }                
+                    }
                 }
+            }
+            catch (Exception ex) {
+                log.Error ("GetStockPrice error", ex);
             }
 
             return result;           

@@ -13,5 +13,6 @@ namespace CogStockFunctions.Dtos
         public string Name { get; set; }
         public string Symbol { get; set; }
         public string LastUpdate{ get; set; }
+        public string Type {get;set;}
     }
 }
