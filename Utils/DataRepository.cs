@@ -21,7 +21,7 @@ namespace CogStockFunctions.Utils
         public static List<Company> GetCompaniesFromDb(TraceWriter log) {
             List<Company> companies = new List<Company>();
 
-            string sqlStatement = $"SELECT * FROM Companies WHERE Symbol <> N''";
+            string sqlStatement = $"SELECT * FROM Companies WHERE Symbol <> N'' AND Blacklisted = 0";
             // First check if company already exists in db, then just use that
 
             try {
