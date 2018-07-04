@@ -250,8 +250,11 @@ namespace CogStockFunctions.Utils
                                     // We are looking for a specific day, so select for that
                                     dayPrice = obj["Time Series (Daily)"][Date];
                                 }
-                                JToken closePrice = dayPrice["4. close"];
-                                result = closePrice.ToString();
+
+                                if (dayPrice != null) {
+                                    JToken closePrice = dayPrice["4. close"];
+                                    result = closePrice.ToString();
+                                }
                                 //result = Convert.ToDecimal(result).ToString(System.Globalization.CultureInfo.InvariantCulture);
                             }
                         }                
