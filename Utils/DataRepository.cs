@@ -51,6 +51,27 @@ namespace CogStockFunctions.Utils
             return companies;
         }
 
+        public static int CleanBlacklistedCompanies(TraceWriter log) {
+            int result = 0;
+
+            string sqlStatement = $"DELETE FROM Updates WHERE Updates.Name IN (SELECT Companies.Name FROM Companies WHERE Blacklisted=1)";
+            // First check if company already exists in db, then just use that
+
+            try {
+                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                {
+                    var command = new SqlCommand(sqlStatement, connection);
+                    connection.Open();
+                    result = command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex) {
+                log.Error($"CleanBlacklistedCompanies db error with {sqlStatement}", ex);
+            }
+
+            return result;
+        }        
+
         public static void AddUpdate(string Id, string Name, string Symbol, string Type, string Text, int Metric, int Metric2, string Sentiment, string StockPrice, DateTime DatePublished, TraceWriter log) {
             string sqlStatement = $"IF NOT EXISTS (SELECT * FROM Updates WHERE Id=N'{Id}') BEGIN INSERT INTO Updates (Id, Name, Symbol, Type, Text, Metric, Metric2, Sentiment, StockPrice, LastUpdate) VALUES (N'{Id}', N'{Name}', N'{Symbol}', '{Type}', N'{Text.Replace("'", "").Replace("\"", "")}', {Metric}, {Metric2}, {Sentiment}, {StockPrice}, '{DatePublished.ToString("yyyy-MM-dd HH:mm:ss")}') END";
 

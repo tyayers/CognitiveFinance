@@ -88,7 +88,7 @@ namespace CogStockFunctions.Utils
                                 string name = entityObject["name"].ToString().Replace(" (company)", "");
 
                                 Company newCompany = GetCompanyInfo(name, log);
-                                if (newCompany.Type == "Organization")
+                                if (newCompany.Type == "Organization" && !newCompany.Blacklisted)
                                     results.Add(newCompany);
                             }
                         }
@@ -131,6 +131,7 @@ namespace CogStockFunctions.Utils
                     {
                         newCompany.Name = (string) reader["Name"];
                         newCompany.Symbol = (string) reader["Symbol"];
+                        newCompany.Blacklisted = (bool) reader["Blacklisted"];
                         newCompany.Type = "Organization";
                     }
 
