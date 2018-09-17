@@ -25,7 +25,8 @@ namespace CogStockFunctions.Utils
 
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "170b9892d8cc491e90401b645cc0b8af");
+                string subKey = System.Environment.GetEnvironmentVariable("BingKey");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subKey);
                 string rssContent = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/news?category=technology&mkt=en-us").Result;
 
                 Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(rssContent);
@@ -72,7 +73,8 @@ namespace CogStockFunctions.Utils
             using (HttpClient client = new HttpClient())
             {
                 string payload = "{\"documents\": [ { \"id\": \"1\", \"text\": \"" + Text + "\"}]}";
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "d172712b5fb94fd1aeb43e86517f79ff");
+                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("TextAnalyticsKey");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", textAnalyticsKey);
                 var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage msg = client.PostAsync("https://westeurope.api.cognitive.microsoft.com/text/analytics/v2.0/entities", content).Result;
@@ -103,7 +105,8 @@ namespace CogStockFunctions.Utils
             string result = "Unknown";
             using (HttpClient client = new HttpClient())
             {
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "170b9892d8cc491e90401b645cc0b8af");
+                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("TextAnalyticsKey");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", textAnalyticsKey);
                 string response = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/entities/?q=" + Name + "&mkt=en-us&count=10&offset=0&safesearch=Moderate").Result;
 
                 Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(response);
@@ -122,7 +125,8 @@ namespace CogStockFunctions.Utils
             // First check if company already exists in db, then just use that
 
             try {
-                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+                using (var connection = new SqlConnection(conString))
                 {
                     var command = new SqlCommand(sqlStatement, connection);
                     connection.Open();
@@ -179,7 +183,8 @@ namespace CogStockFunctions.Utils
             using (HttpClient client = new HttpClient())
             {
                 string payload = "{\"documents\": [ { \"id\": \"1\", \"language\": \"en\", \"text\": \"" + Text + "\"}]}";
-                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", "d172712b5fb94fd1aeb43e86517f79ff");
+                string sentKey = System.Environment.GetEnvironmentVariable("SentimentKey");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", sentKey);
                 var content = new StringContent(payload, Encoding.UTF8, "application/json");
 
                 HttpResponseMessage msg = client.PostAsync("https://westeurope.api.cognitive.microsoft.com/text/analytics/v2.0/sentiment", content).Result;
@@ -218,7 +223,7 @@ namespace CogStockFunctions.Utils
                             Text = tweet["text"].ToString(),
                             FavoriteCount = tweet["favorite_count"].ToString(),
                             RetweetCount = tweet["retweet_count"].ToString(),
-                            Sentiment = GetSentitment(tweet["text"].ToString()),
+                            Sentiment = "-1",//GetSentitment(tweet["text"].ToString()),
                             DatePublished = tweet["created_at"].ToString()
                         };
 
@@ -237,7 +242,8 @@ namespace CogStockFunctions.Utils
                 if (Symbol != "") {
                     using (HttpClient client = new HttpClient())
                     {
-                        HttpResponseMessage msg = client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=" + Symbol + "&apikey=FNT06P1FPP3XUTCW").Result;
+                        string stockKey = System.Environment.GetEnvironmentVariable("StockKey");
+                        HttpResponseMessage msg = client.GetAsync("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=" + Symbol + "&apikey=" + stockKey).Result;
                         if (msg.IsSuccessStatusCode)
                         {
                             var JsonDataResponse = msg.Content.ReadAsStringAsync().Result;
@@ -275,7 +281,9 @@ namespace CogStockFunctions.Utils
                 using (HttpClient client = new HttpClient())
                 {
                     client.DefaultRequestHeaders.Add("user-agent", "node.js");
-                    HttpResponseMessage msg = client.GetAsync("https://api.github.com/search/repositories?q=" + Company + "/&sort=stars&order=desc&client_id=63b1752838e79e37045863b1752838e79e370458&client_secret=688e260b84b06028baf8c1d1011c2400670fb449").Result;
+                    string gitHubUser = System.Environment.GetEnvironmentVariable("GitHubUser");
+                    string gitHubKey = System.Environment.GetEnvironmentVariable("GitHubKey");
+                    HttpResponseMessage msg = client.GetAsync("https://api.github.com/search/repositories?q=" + Company + "/&sort=stars&order=desc&client_id=" + gitHubUser + "&client_secret=" + gitHubKey).Result;
                     if (msg.IsSuccessStatusCode)
                     {
                         var JsonDataResponse = msg.Content.ReadAsStringAsync().Result;
@@ -297,8 +305,10 @@ namespace CogStockFunctions.Utils
             var client = new HttpClient();
             var uri = new Uri("https://api.twitter.com/oauth2/token");
 
-            var encodedConsumerKey = WebUtility.UrlEncode("fcoIK7zRH6H3IkhS6WogDiBYd");
-            var encodedConsumerSecret = WebUtility.UrlEncode("WzAduP0pcuirkBd17xVoV5d7PlAK9qh6usfIhiuU7FgFC7hms2");
+            string twitterUser = System.Environment.GetEnvironmentVariable("TwitterKey");
+            string twitterKey = System.Environment.GetEnvironmentVariable("TwitterKey");
+            var encodedConsumerKey = WebUtility.UrlEncode(twitterUser);
+            var encodedConsumerSecret = WebUtility.UrlEncode(twitterKey);
             var combinedKeys = String.Format("{0}:{1}", encodedConsumerKey, encodedConsumerSecret);
             var utfBytes = System.Text.Encoding.UTF8.GetBytes(combinedKeys);
             var encodedString = Convert.ToBase64String(utfBytes);

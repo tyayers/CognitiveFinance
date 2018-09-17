@@ -25,7 +25,8 @@ namespace CogStockFunctions.Utils
             // First check if company already exists in db, then just use that
 
             try {
-                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+                using (var connection = new SqlConnection(conString))
                 {
                     var command = new SqlCommand(sqlStatement, connection);
                     connection.Open();
@@ -58,7 +59,9 @@ namespace CogStockFunctions.Utils
             // First check if company already exists in db, then just use that
 
             try {
-                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+
+                using (var connection = new SqlConnection(conString))
                 {
                     var command = new SqlCommand(sqlStatement, connection);
                     connection.Open();
@@ -76,7 +79,8 @@ namespace CogStockFunctions.Utils
             string sqlStatement = $"IF NOT EXISTS (SELECT * FROM Updates WHERE Id=N'{Id}') BEGIN INSERT INTO Updates (Id, Name, Symbol, Type, Text, Metric, Metric2, Sentiment, StockPrice, LastUpdate) VALUES (N'{Id}', N'{Name}', N'{Symbol}', '{Type}', N'{Text.Replace("'", "").Replace("\"", "")}', {Metric}, {Metric2}, {Sentiment}, {StockPrice}, '{DatePublished.ToString("yyyy-MM-dd HH:mm:ss")}') END";
 
             try {
-                using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+                using (var connection = new SqlConnection(conString))
                 {
                     var command = new SqlCommand(sqlStatement, connection);
                     connection.Open();

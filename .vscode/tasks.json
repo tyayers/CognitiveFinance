@@ -25,6 +25,26 @@
       "problemMatcher": "$msCompile"
     },
     {
+      "label": "clean release",
+      "command": "dotnet clean --configuration Release",
+      "type": "shell",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "publish",
+      "identifier": "publish",
+      "command": "dotnet publish --configuration Release",
+      "type": "shell",
+      "dependsOn": "clean release",
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
       "label": "Run Functions Host",
       "identifier": "runFunctionsHost",
       "type": "shell",

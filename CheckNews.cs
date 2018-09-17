@@ -62,7 +62,8 @@ namespace CogStockFunctions.Functions
             string sqlStatement = $"SELECT COUNT(*) FROM Companies WHERE Name=N'{Name}'";
             if (Name != "") {
                 try {
-                    using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                    string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+                    using (var connection = new SqlConnection(conString))
                     {
                         var command = new SqlCommand(sqlStatement, connection);
                         connection.Open();
@@ -84,7 +85,8 @@ namespace CogStockFunctions.Functions
                 string sqlStatement = $"IF NOT EXISTS (SELECT * FROM Companies WHERE Name=N'{Name}') BEGIN INSERT INTO Companies (Name, Symbol, LastUpdate) VALUES ('{Name}', '{Symbol}', '{System.DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")}') END";
                 try
                 {
-                    using (var connection = new SqlConnection("Server=tcp:clashserver.database.windows.net,1433;Initial Catalog=clashofaisql;Persist Security Info=False;User ID=clashuser;Password=Passwort123!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"))
+                    string conString = System.Environment.GetEnvironmentVariable("ConnectionString");
+                    using (var connection = new SqlConnection(conString))
                     {
                         var command = new SqlCommand(sqlStatement, connection);
                         connection.Open();
