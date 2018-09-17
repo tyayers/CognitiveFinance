@@ -20,7 +20,7 @@ namespace CogStockFunctions.Functions
     public static class CheckTweets
     {
         [FunctionName("CheckTweets")]
-        public static void Run([TimerTrigger("0 */30 * * * *")]TimerInfo myTimer, TraceWriter log)
+        public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, TraceWriter log)
         {
             log.Info("C# CheckTweets HTTP trigger function processed a request.");
  
