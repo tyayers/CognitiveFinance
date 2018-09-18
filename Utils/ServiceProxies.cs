@@ -33,7 +33,7 @@ namespace CogStockFunctions.Utils
 
                 if (obj != null) {
                     //AuthenticationResponse auth = GetTwitterAuthenticationToken();
-            
+
                     foreach (JObject newsItem in obj["value"]) {
                         string title = newsItem["name"].ToString();
                         string description = newsItem["description"].ToString();
@@ -105,7 +105,7 @@ namespace CogStockFunctions.Utils
             string result = "Unknown";
             using (HttpClient client = new HttpClient())
             {
-                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("TextAnalyticsKey");
+                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("SearchKey");
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", textAnalyticsKey);
                 string response = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/entities/?q=" + Name + "&mkt=en-us&count=10&offset=0&safesearch=Moderate").Result;
 
@@ -148,7 +148,7 @@ namespace CogStockFunctions.Utils
             }
 
             // In case doesn't exist in db, try from the internet
-            if (newCompany.Name == "") {
+            if (String.IsNullOrEmpty(newCompany.Name)) {
                 newCompany.Name = CompanyName;
                 newCompany.Symbol = GetCompanyStockSymbol(CompanyName);
                 newCompany.Type = GetEntityType(CompanyName); 
@@ -167,7 +167,7 @@ namespace CogStockFunctions.Utils
                 if (obj != null && obj["ResultSet"] != null && obj["ResultSet"]["Result"] != null) {
                     foreach (JObject stockItem in obj["ResultSet"]["Result"]) {
                         string stockExchange = stockItem["exchDisp"].ToString();
-                        if (stockExchange == "NASDAQ" || stockExchange == "NYSE") {
+                        if (stockExchange == "NASDAQ" || stockExchange == "NYSE" || stockExchange == "TLX Exchange") {
                             // We have a good match
                             result = stockItem["symbol"].ToString();
                         }

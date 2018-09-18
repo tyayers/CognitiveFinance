@@ -19,11 +19,21 @@ namespace CogStockFunctions.Functions
 {
     public static class CheckNews
     {
-        [FunctionName("CheckNews")]
-        public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, TraceWriter log)
-        {
-            log.Info("C# CheckNews HTTP trigger function processed a request.");
+        // [FunctionName("CheckNews")]
+        // public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, TraceWriter log)
+        // {
+        //     log.Info("C# CheckNews HTTP trigger function processed a request.");
+        //     StartNewsCheck(log);
+        // }
 
+        [FunctionName("CheckNews")]
+        public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)
+        {
+            StartNewsCheck(log);
+            return new OkObjectResult($"Checked news.");
+        }
+
+        private static void StartNewsCheck(TraceWriter log) {
             List<News> newsUpdates = Utils.ServiceProxies.GetNews("Technology", log);
             log.Info($"Found {newsUpdates.Count.ToString()} news stories from Bing News, adding to db..");
 
@@ -56,7 +66,6 @@ namespace CogStockFunctions.Functions
                 }                
             }
         }
-
         private static bool CheckIfCompanyExists(string Name, TraceWriter log) {
             bool result = false;
             string sqlStatement = $"SELECT COUNT(*) FROM Companies WHERE Name=N'{Name}'";
