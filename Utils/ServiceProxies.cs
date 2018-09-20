@@ -305,7 +305,7 @@ namespace CogStockFunctions.Utils
             var client = new HttpClient();
             var uri = new Uri("https://api.twitter.com/oauth2/token");
 
-            string twitterUser = System.Environment.GetEnvironmentVariable("TwitterKey");
+            string twitterUser = System.Environment.GetEnvironmentVariable("TwitterUser");
             string twitterKey = System.Environment.GetEnvironmentVariable("TwitterKey");
             var encodedConsumerKey = WebUtility.UrlEncode(twitterUser);
             var encodedConsumerSecret = WebUtility.UrlEncode(twitterKey);
