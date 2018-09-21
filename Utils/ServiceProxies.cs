@@ -25,7 +25,7 @@ namespace CogStockFunctions.Utils
 
             using (HttpClient client = new HttpClient())
             {
-                string subKey = System.Environment.GetEnvironmentVariable("BingKey");
+                string subKey = System.Environment.GetEnvironmentVariable("BingSearchKey");
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subKey);
                 string rssContent = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/news?category=technology&mkt=en-us").Result;
 
@@ -60,6 +60,44 @@ namespace CogStockFunctions.Utils
                                 results.Add(newNews);
                             }
                         }
+                    }
+                }
+
+                return results;
+            }
+        }
+
+        public static List<News> SearchNews(string keyword, TraceWriter log)
+        {
+            List<News> results = new List<News>();
+
+            using (HttpClient client = new HttpClient())
+            {
+                string subKey = System.Environment.GetEnvironmentVariable("BingSearchKey");
+                client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", subKey);
+                string rssContent = client.GetStringAsync($"https://api.cognitive.microsoft.com/bing/v7.0/news/search?q=" + keyword + "&mkt=en-us").Result;
+
+                Newtonsoft.Json.Linq.JObject obj = Newtonsoft.Json.Linq.JObject.Parse(rssContent);
+
+                if (obj != null)
+                {
+                    foreach (JObject newsItem in obj["value"])
+                    {
+                        string title = newsItem["name"].ToString();
+                        string description = newsItem["description"].ToString();
+                        string datePublished = newsItem["datePublished"].ToString();
+                        string sentiment = GetSentitment(title + " " + description);
+
+                        News newNews = new News()
+                        {
+                            CompanyName = keyword,
+                            Title = newsItem["name"].ToString(),
+                            Description = newsItem["description"].ToString(),
+                            PublishDate = datePublished,
+                            Sentiment = sentiment
+                        };
+
+                        results.Add(newNews);
                     }
                 }
 
@@ -105,7 +143,7 @@ namespace CogStockFunctions.Utils
             string result = "Unknown";
             using (HttpClient client = new HttpClient())
             {
-                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("SearchKey");
+                string textAnalyticsKey = System.Environment.GetEnvironmentVariable("BingSearchKey");
                 client.DefaultRequestHeaders.Add("Ocp-Apim-Subscription-Key", textAnalyticsKey);
                 string response = client.GetStringAsync("https://api.cognitive.microsoft.com/bing/v7.0/entities/?q=" + Name + "&mkt=en-us&count=10&offset=0&safesearch=Moderate").Result;
 
@@ -220,10 +258,11 @@ namespace CogStockFunctions.Utils
                 if (obj != null && obj["statuses"] != null) {
                     foreach (JObject tweet in obj["statuses"]) {
                         Tweet newTweet = new Tweet() {
+                            Id = tweet["id"].ToString(),
                             Text = tweet["text"].ToString(),
-                            FavoriteCount = tweet["favorite_count"].ToString(),
-                            RetweetCount = tweet["retweet_count"].ToString(),
-                            Sentiment = "-1",//GetSentitment(tweet["text"].ToString()),
+                            FavoriteCount = Convert.ToInt32(tweet["favorite_count"].ToString()),
+                            RetweetCount = Convert.ToInt32(tweet["retweet_count"].ToString()),
+                            Sentiment = -1, //GetSentitment(tweet["text"].ToString()),
                             DatePublished = tweet["created_at"].ToString()
                         };
 
@@ -236,6 +275,7 @@ namespace CogStockFunctions.Utils
         }
 
         public static string GetStockPrice(string Symbol, string Date, TraceWriter log) {
+
             string result = "0";
 
             try {
@@ -255,12 +295,19 @@ namespace CogStockFunctions.Utils
                                 if (Date != "") {
                                     // We are looking for a specific day, so select for that
                                     dayPrice = obj["Time Series (Daily)"][Date];
+                                    if (dayPrice != null)
+                                    {
+                                        JToken closePrice = dayPrice["4. close"];
+                                        result = closePrice.ToString();
+                                    }
                                 }
-
-                                if (dayPrice != null) {
-                                    JToken closePrice = dayPrice["4. close"];
+                                else
+                                {
+                                    JToken closePrice = dayPrice.First["4. close"];
                                     result = closePrice.ToString();
                                 }
+
+
                                 //result = Convert.ToDecimal(result).ToString(System.Globalization.CultureInfo.InvariantCulture);
                             }
                         }                

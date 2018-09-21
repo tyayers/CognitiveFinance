@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace CogStockFunctions.Functions
 {
-    public static class CleanBlacklisted
+    public static class CleanBlacklistedFunctions
     {
         [FunctionName("CleanBlacklisted")]
         public static IActionResult Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)]HttpRequest req, TraceWriter log)

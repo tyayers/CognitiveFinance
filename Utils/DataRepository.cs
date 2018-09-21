@@ -13,6 +13,7 @@ using System.Text;
 using System.Data.SqlClient;
 using System;
 using System.Net;
+using NPoco;
 
 namespace CogStockFunctions.Utils
 {
@@ -92,5 +93,27 @@ namespace CogStockFunctions.Utils
             }
         } 
 
+        public static void AddDailyUpdate(DailyUpdate update)
+        {
+            SqlConnection con = null;
+
+            try
+            {
+                con = new SqlConnection(System.Environment.GetEnvironmentVariable("ConnectionString"));
+                con.Open();
+                using (var db = new Database(con))
+                {
+                    db.Insert(update);
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.TraceError("NosyRepo error in InsertStory. " + ex.ToString());
+            }
+            finally
+            {
+                if (con != null) con.Close();
+            }
+        }
     }
 }
