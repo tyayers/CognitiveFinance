@@ -205,7 +205,7 @@ namespace CogStockFunctions.Utils
                 if (obj != null && obj["ResultSet"] != null && obj["ResultSet"]["Result"] != null) {
                     foreach (JObject stockItem in obj["ResultSet"]["Result"]) {
                         string stockExchange = stockItem["exchDisp"].ToString();
-                        if (stockExchange == "NASDAQ" || stockExchange == "NYSE" || stockExchange == "TLX Exchange") {
+                        if (stockExchange == "NASDAQ" || stockExchange == "NYSE") {
                             // We have a good match
                             result = stockItem["symbol"].ToString();
                         }
