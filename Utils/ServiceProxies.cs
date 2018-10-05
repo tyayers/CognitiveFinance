@@ -310,6 +310,10 @@ namespace CogStockFunctions.Utils
 
                                 //result = Convert.ToDecimal(result).ToString(System.Globalization.CultureInfo.InvariantCulture);
                             }
+                            else
+                            {
+                                log.Error("Bad result from Stock API: " + JsonDataResponse);
+                            }
                         }                
                     }
                 }
@@ -317,6 +321,8 @@ namespace CogStockFunctions.Utils
             catch (Exception ex) {
                 log.Error ("GetStockPrice error", ex);
             }
+
+            log.Info($"Found stock price {result} for stock {Symbol}");
 
             return result;           
         }

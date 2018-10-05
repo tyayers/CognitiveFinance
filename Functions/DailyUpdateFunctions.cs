@@ -67,6 +67,9 @@ namespace CogStockFunctions
                         update.NewsStories = news.Count;
 
                         DataRepository.AddDailyUpdate(update);
+
+                        // Sleep to not overload free APIs
+                        System.Threading.Thread.Sleep(12000);
                     }
                 }
             }
